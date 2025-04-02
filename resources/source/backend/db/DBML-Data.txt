@@ -1,0 +1,47 @@
+Table Tags {
+  tag_id String [primary key]
+  tag_name String
+  created_at datetime
+  created_by String
+}
+
+Table Resources {
+  resource_path String [primary key]
+  created_at datetime
+  created_by String
+  category String
+}
+
+Table ResourceTags {
+  tag_id String [primary key]
+  resource_path String [primary key]
+  created_at datetime
+  created_by String
+}
+
+Table GroupPermissions {
+  group_id String [primary key]
+  path String [primary key]
+  type String
+}
+
+Table UserPermissions {
+  user_id String [primary key]
+  path String [primary key]
+  type String
+}
+Table FileData {
+  resource_path String [primary key]
+  data String
+}
+
+Table ResourceInfo {
+  resource_path String [primary key]
+  hasTags Boolean
+  // This is a view combining Resources and ResourceTags
+}
+
+Ref: Tags.tag_id < ResourceTags.tag_id
+Ref: Resources.resource_path < ResourceTags.resource_path
+
+Ref: FileData.resource_path - Resources.resource_path

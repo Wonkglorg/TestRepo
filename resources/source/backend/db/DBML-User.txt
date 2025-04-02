@@ -1,0 +1,54 @@
+Table Roles {
+  role_id String [primary key]
+  role_name String
+}
+
+Table Users {
+  user_id String [primary key]
+  password_hash String
+  created_at datetime
+  created_by String
+  last_modified_at datetime
+  last_modified_by String
+}
+
+Table UserRoles {
+  role_id String [primary key]
+  user_id String [primary key]
+}
+
+Table Groups {
+  group_id String [primary key]
+  group_name String
+  created_at datetime
+  created_by String
+  last_modified_at datetime
+  last_modified_by String
+}
+
+Table UserGroups {
+  user_id String [primary key]
+  group_id String [primary key]
+}
+
+
+Table AuditLog {
+  log_id int [primary key]
+  user_id String
+  action String
+  message String
+  timestamp datetime
+  affected_userId String
+  affected_groupId String
+}
+
+
+Ref: Roles.role_id < UserRoles.role_id
+Ref: Users.user_id < UserRoles.user_id
+
+Ref: Users.user_id < UserGroups.user_id
+Ref: Groups.group_id < UserGroups.group_id
+
+
+Ref: Groups.group_id < AuditLog.affected_groupId
+Ref: Users.user_id < AuditLog.affected_userId
